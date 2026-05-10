@@ -2,11 +2,17 @@
 
 A personal engineering portfolio for building AI-powered SEO and AI Search workflows.
 
-This repository is used to document and build practical systems for SEO data diagnostics, BigQuery analysis, Python automation, LLM-assisted content audit, entity SEO, internal linking, AI visibility, RAG, and MCP-based SEO tooling.
+This repository documents and builds practical systems for SEO data diagnostics, BigQuery analysis, Python automation, LLM-assisted content audit, entity SEO, internal linking, AI visibility, RAG, and MCP-based SEO tooling.
+
+## TL;DR
+
+This project is a hands-on AI SEO engineering portfolio.
+
+It starts with a BigQuery-backed SEO data model, then expands into Python data pipelines, crawl diagnostics, opportunity scoring, LLM content audits, semantic clustering, internal linking, AI visibility monitoring, and stakeholder-ready reporting.
 
 ## Project Goals
 
-This project is designed to help me build hands-on capability in:
+This project is designed to build hands-on capability in:
 
 - SEO data engineering
 - BigQuery SQL analysis
@@ -17,6 +23,21 @@ This project is designed to help me build hands-on capability in:
 - Entity SEO and internal linking systems
 - AI Search / GEO visibility workflows
 - RAG and MCP-based SEO tooling
+
+## Current Milestone
+
+M0 W1: Project foundation
+
+Completed:
+
+- Created GitHub repository
+- Created project folder structure
+- Prepared BigQuery Sandbox workflow
+- Created BigQuery dataset: `seodiagnostic`
+- Created first GSC query schema
+- Added `is_branded` field for branded vs non-branded query analysis
+- Configured Python virtual environment
+- Added Python dependencies in `requirements.txt`
 
 ## Repository Structure
 
@@ -52,19 +73,19 @@ cd AI-SEO-Portfolio
 Create a Python virtual environment:
 
 ```powershell
-python -m venv .venv
+py -3.12 -m venv .venv
 ```
 
 Activate the virtual environment:
 
 ```powershell
-.venv\Scripts\Activate.ps1
+.\.venv\Scripts\Activate.ps1
 ```
 
 Install dependencies:
 
 ```powershell
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ## Environment Variables
@@ -78,7 +99,7 @@ OPENAI_API_KEY=
 ANTHROPIC_API_KEY=
 GOOGLE_APPLICATION_CREDENTIALS=
 GCP_PROJECT_ID=
-BIGQUERY_DATASET=seo_diagnostic
+BIGQUERY_DATASET=seodiagnostic
 ```
 
 Do not commit `.env`, API keys, service account JSON files, or raw private data to GitHub.
@@ -99,12 +120,35 @@ data/processed/
 
 These folders are ignored by Git except for `.gitkeep` files, so the folder structure is preserved without exposing private data.
 
-## Current Stage
+## Architecture
 
-M0 W1: Project foundation
+```text
+GSC exports / crawl data / content data
+        |
+        v
+BigQuery dataset: seodiagnostic
+        |
+        v
+SQL + Python diagnostics
+        |
+        v
+Reports, CSV outputs, audits, and recommendations
+```
 
-Current focus:
-- Set up GitHub repository
-- Create project folder structure
-- Prepare BigQuery Sandbox workflow
-- Configure Python environment
+## Roadmap
+
+- M0: Database, repo, schemas, Python foundation
+- M1: GSC and crawl pipeline with diagnostic report
+- M2: LLM content and compliance audit layer
+- M3: Embeddings and keyword cannibalization analysis
+- M4: Entity map, JSON-LD, and internal linking system
+- M5: AI visibility and GEO monitoring
+- M6: MCP-style SEO assistant tools
+- M7: International AI visibility workflows
+- M8: Lead-level playbook, ROI framework, and portfolio packaging
+
+## Status
+
+Current version: `v0.1.0`
+
+This repository is in active development.
