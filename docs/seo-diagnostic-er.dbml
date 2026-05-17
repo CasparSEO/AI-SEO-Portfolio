@@ -1,0 +1,224 @@
+Project seo_diagnostic {
+  database_type: "BigQuery"
+  Note: '''
+  # SEO Diagnostic Warehouse
+
+  Purpose:
+  Build a local + BigQuery-ready SEO diagnostic data model for GSC performance, crawl diagnostics, content inventory, and opportunity scoring.
+
+  M0W2D4 output:
+  - ER diagram in dbdiagram.io
+  - Exported PNG for docs/er-diagram.png
+  - Documented join keys and table roles
+  - GitHub commit evidence
+  '''
+}
+
+TableGroup "Input Data Sources" [note: "Raw data sources feeding the SEO diagnostic warehouse."] {
+  gsc_daily_request
+  gsc_pages
+  crawl_results
+  content_inventory
+}
+
+TableGroup "Diagnostic Outputs" [note: "Tables or artifacts used to produce SEO recommendations and reports."] {
+  opportunity_scores
+  diagnostic_report_output
+  action_items_output
+}
+
+Table gsc_daily_request {
+  date date [note: "GSC reporting date."]
+  query varchar [note: "Search query from GSC."]
+  is_branded boolean [note: "Whether query is branded or non-branded."]
+  landing_page varchar [note: "URL receiving organic search traffic."]
+  gsc_clicks int
+  gsc_impressions int
+  gsc_ctr_pct float
+  gsc_avg_position float
+  gsc_reporting_region varchar
+  gsc_device_category varchar
+
+  indexes {
+    (date, landing_page, query)
+  }
+
+  Note: '''
+  Query-level GSC performance table.
+
+  Main use:
+  - Top query analysis
+  - Branded vs non-branded split
+  - CTR gap analysis
+  - Striking-distance keyword discovery
+  '''
+}
+
+Table gsc_pages {
+  date date [note: "GSC reporting date."]
+  landing_page varchar [note: "URL receiving organic search traffic."]
+  gsc_clicks int
+  gsc_impressions int
+  gsc_ctr_pct float
+  gsc_avg_position float
+  gsc_reporting_region varchar
+  gsc_device_category varchar
+
+  indexes {
+    (date, landing_page)
+  }
+
+  Note: '''
+  Page-level GSC performance table.
+
+  Main use:
+  - Page performance trend
+  - URL-level click / impression diagnostics
+  - Join with crawl_results for technical issue analysis
+  '''
+}
+
+Table crawl_results {
+  crawl_date date [note: "Date when the page was crawled."]
+  landing_page varchar [note: "URL crawled and used as join key."]
+  final_url varchar [note: "Final URL after redirects."]
+  status_code int
+  title varchar
+  title_length int
+  meta_description varchar
+  meta_description_length int
+  h1 varchar
+  h1_count int
+  canonical_url varchar
+  canonical_matches_landing_page boolean
+  word_count int
+  publish_date date
+  update_date date
+  has_schema boolean
+  schema_types varchar
+  internal_links_count int
+  external_links_count int
+  crawl_source varchar
+
+  indexes {
+    (crawl_date, landing_page)
+  }
+
+  Note: '''
+  Technical and on-page crawl diagnostics.
+
+  Main use:
+  - Status code issues
+  - Canonical mismatch
+  - Thin content detection
+  - Missing / weak title, meta, H1
+  - Schema presence check
+  '''
+}
+
+Table content_inventory {
+  landing_page varchar [note: "Main page URL and primary join key."]
+  language varchar [note: "Content language, e.g. en, zh-Hant."]
+  market varchar [note: "Target market, e.g. HK, SG, US."]
+  content_type varchar [note: "Content format, e.g. academy_article, faq_page, product_page."]
+  primary_topic varchar [note: "Main topic or entity of the page."]
+  publish_date date
+  update_date date
+  content_status varchar [note: "live, archived, redirected, draft, etc."]
+
+  indexes {
+    (landing_page, primary_topic)
+  }
+
+  Note: '''
+  Master content metadata table.
+
+  Main use:
+  - Topic inventory
+  - Market / language coverage
+  - Content freshness analysis
+  - Join layer for all URL-level diagnostics
+  '''
+}
+
+Table opportunity_scores {
+  score_date date [note: "Date when opportunity score was generated."]
+  landing_page varchar [note: "URL being scored."]
+  query varchar [note: "Search query related to the opportunity."]
+  opportunity_score float [note: "Prioritisation score."]
+  opportunity_type varchar [note: "refresh, internal_link, canonical_fix, title_update, schema_addition, etc."]
+  issue_summary varchar [note: "Short description of the issue."]
+  recommended_action varchar [note: "Recommended SEO action."]
+  priority varchar [note: "high, medium, low."]
+
+  indexes {
+    (score_date, landing_page, query)
+  }
+
+  Note: '''
+  Prioritised SEO opportunity table.
+
+  Main use:
+  - Rank SEO opportunities
+  - Convert diagnostics into actions
+  - Feed diagnostic_report_output
+  - Feed action_items_output
+  '''
+}
+
+Table diagnostic_report_output {
+  report_date date [note: "Date the report is generated."]
+  landing_page varchar [note: "URL included in the report."]
+  report_section varchar [note: "technical, content, gsc_performance, opportunity."]
+  finding varchar [note: "Main diagnostic finding."]
+  evidence_source varchar [note: "gsc_daily_request, gsc_pages, crawl_results, content_inventory, opportunity_scores."]
+  impact_level varchar [note: "high, medium, low."]
+  output_file varchar [note: "Expected report file path, e.g. outputs/diagnostic_report.md."]
+
+  indexes {
+    (report_date, landing_page)
+  }
+
+  Note: '''
+  Visual documentation table for final report output.
+
+  This is not necessarily a core BigQuery table in M0.
+  It documents the expected reporting artifact produced from the warehouse.
+  '''
+}
+
+Table action_items_output {
+  action_date date [note: "Date action item is created."]
+  landing_page varchar [note: "URL requiring action."]
+  action_type varchar [note: "refresh, rewrite_title, fix_canonical, add_schema, add_internal_links."]
+  action_owner varchar [note: "SEO, content, engineering, compliance."]
+  action_item varchar [note: "Human-readable task."]
+  priority varchar [note: "high, medium, low."]
+  expected_output varchar [note: "Expected deliverable, e.g. updated page, Jira ticket, PR, report row."]
+  status varchar [note: "new, in_progress, done, blocked."]
+
+  indexes {
+    (action_date, landing_page, priority)
+  }
+
+  Note: '''
+  Visual documentation table for action items.
+
+  This table shows how diagnostics become execution tasks.
+  It can be implemented later after M0 if needed.
+  '''
+}
+
+Ref: content_inventory.landing_page < gsc_daily_request.landing_page
+Ref: content_inventory.landing_page < gsc_pages.landing_page
+Ref: content_inventory.landing_page < crawl_results.landing_page
+Ref: content_inventory.landing_page < opportunity_scores.landing_page
+
+Ref: gsc_daily_request.landing_page < opportunity_scores.landing_page
+Ref: gsc_daily_request.query < opportunity_scores.query
+
+Ref: gsc_pages.landing_page < crawl_results.landing_page
+
+Ref: opportunity_scores.landing_page < diagnostic_report_output.landing_page
+Ref: opportunity_scores.landing_page < action_items_output.landing_page
+Ref: diagnostic_report_output.landing_page < action_items_output.landing_page
