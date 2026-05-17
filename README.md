@@ -24,7 +24,7 @@ This project is designed to build hands-on capability in:
 - AI Search / GEO visibility workflows
 - RAG and MCP-based SEO tooling
 
-## Current Milestone
+## Current Milestone (10-May-2026)
 
 M0 W1: Project foundation
 
@@ -152,3 +152,16 @@ Reports, CSV outputs, audits, and recommendations
 Current version: `v0.1.0`
 
 This repository is in active development.
+
+## Current Milestone (17-May-2026)
+
+### v0.1.5 - M0W2 SEO Diagnostic Database Schema
+
+The project now includes a 5-table SEO diagnostic data model, BigQuery DDL files, a DuckDB local fallback, and an ER diagram created with dbdiagram.io.
+
+Key files:
+
+- `sql/`
+- `src/init_duckdb.py`
+- `docs/er-diagram.md`
+- `release-log.md`
