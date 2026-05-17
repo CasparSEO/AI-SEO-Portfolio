@@ -21,3 +21,7 @@ data/processed/*
 Thumbs.db
 .vscode/
 .cursor/
+
+#duckdb database files
+data/*.duckdb
+data/*.duckdb.wal
