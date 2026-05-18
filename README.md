@@ -166,7 +166,7 @@ Key files:
 - `docs/er-diagram.md`
 - `release-log.md`
 
-## M0W3D1 - GSC CSV Export
+## GSC CSV Export (18-May-2026)
 
 - Source: Google Search Console export
 - File: `data/raw/gscqueriesraw.csv`
@@ -174,3 +174,8 @@ Key files:
 - Header: `date,url,query,clicks,impressions,ctr,position,country,device,is_branded`
 - Clean CSV: not generated, because raw file already matches schema
 - Next: load CSV into BigQuery `gscqueries` table
+
+### Load GSC CSV to BigQuery  (18-May-2026)
+
+Loaded `data/raw/gscqueriesraw.csv` into BigQuery table `seodiagnostic.gscqueries`.
+Validation query: `SELECT COUNT(*) FROM seodiagnostic.gscqueries`.
