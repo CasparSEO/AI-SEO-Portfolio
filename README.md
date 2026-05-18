@@ -165,3 +165,12 @@ Key files:
 - `src/init_duckdb.py`
 - `docs/er-diagram.md`
 - `release-log.md`
+
+## M0W3D1 - GSC CSV Export
+
+- Source: Google Search Console export
+- File: `data/raw/gscqueriesraw.csv`
+- Schema: aligned with previous `gscqueries` schema
+- Header: `date,url,query,clicks,impressions,ctr,position,country,device,is_branded`
+- Clean CSV: not generated, because raw file already matches schema
+- Next: load CSV into BigQuery `gscqueries` table
