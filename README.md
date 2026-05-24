@@ -179,3 +179,24 @@ Key files:
 
 Loaded `data/raw/gscqueriesraw.csv` into BigQuery table `seodiagnostic.gscqueries`.
 Validation query: `SELECT COUNT(*) FROM seodiagnostic.gscqueries`.
+
+### M0W3D3 - Crawl 30 URLs
+
+Generated a 30-URL crawl seed from GSC landing pages and crawled on-page SEO fields.
+
+Local files:
+- `data/raw/crawlseed.csv`
+- `data/raw/crawlresults.csv`
+
+Crawl output fields:
+- `url`
+- `statuscode`
+- `title`
+- `metadescription`
+- `h1`
+- `canonical`
+- `wordcount`
+- `schemafound`
+- `crawledat`
+
+Raw CSV files are kept locally and not pushed to GitHub.
