@@ -1,202 +1,116 @@
-# AI SEO Portfolio
+## Milestones
 
-A personal engineering portfolio for building AI-powered SEO and AI Search workflows.
+### M0W1 - Project Foundation
 
-This repository documents and builds practical systems for SEO data diagnostics, BigQuery analysis, Python automation, LLM-assisted content audit, entity SEO, internal linking, AI visibility, RAG, and MCP-based SEO tooling.
-
-## TL;DR
-
-This project is a hands-on AI SEO engineering portfolio.
-
-It starts with a BigQuery-backed SEO data model, then expands into Python data pipelines, crawl diagnostics, opportunity scoring, LLM content audits, semantic clustering, internal linking, AI visibility monitoring, and stakeholder-ready reporting.
-
-## Project Goals
-
-This project is designed to build hands-on capability in:
-
-- SEO data engineering
-- BigQuery SQL analysis
-- Python automation for SEO workflows
-- Google Search Console data processing
-- Technical SEO crawling and diagnostics
-- LLM-based content and compliance audit
-- Entity SEO and internal linking systems
-- AI Search / GEO visibility workflows
-- RAG and MCP-based SEO tooling
-
-## Current Milestone (10-May-2026)
-
-M0 W1: Project foundation
+Set up the AI SEO portfolio repository and established the initial BigQuery-backed SEO data foundation.
 
 Completed:
-
-- Created GitHub repository
-- Created project folder structure
+- Created the GitHub repository and local project structure
+- Set up Python virtual environment and `requirements.txt`
 - Prepared BigQuery Sandbox workflow
-- Created BigQuery dataset: `seodiagnostic`
-- Created first GSC query schema
-- Added `is_branded` field for branded vs non-branded query analysis
-- Configured Python virtual environment
-- Added Python dependencies in `requirements.txt`
+- Created the SEO diagnostic dataset
+- Designed the first GSC query schema
+- Added `is_branded` for branded vs non-branded query analysis
 
-## Repository Structure
+Key outputs:
+- `README.md`
+- `requirements.txt`
+- `data/`
+- `sql/`
+- `src/`
 
-```text
-AI-SEO-Portfolio/
-├── data/
-│   ├── raw/              # Raw exports such as GSC CSV files
-│   └── processed/        # Cleaned or transformed datasets
-├── docs/                 # Technical notes, schema design, release logs
-├── notebooks/            # Exploratory analysis and experiments
-├── notes/                # Daily learning notes
-├── outputs/              # Final reports, CSV outputs, playbooks
-├── prompts/              # LLM prompt templates
-├── schemas/              # BigQuery schemas and JSON schemas
-├── scripts/              # Helper scripts and automation runners
-├── sql/                  # BigQuery SQL files
-├── src/                  # Python source code
-├── .env.example          # Example environment variables
-├── .gitignore            # Files and folders excluded from Git
-├── requirements.txt      # Python package dependencies
-└── README.md
-```
+---
 
-## Setup
+### M0W2 - SEO Diagnostic Database Schema
 
-Clone the repository:
+Built the first version of the SEO diagnostic database model.
 
-```powershell
-git clone https://github.com/CasparSEO/AI-SEO-Portfolio.git
-cd AI-SEO-Portfolio
-```
+Completed:
+- Designed a 5-table SEO diagnostic schema
+- Created BigQuery DDL files
+- Added a local DuckDB fallback setup
+- Created an ER diagram for the diagnostic data model
+- Documented the schema and release milestone
 
-Create a Python virtual environment:
+Core tables:
+- `gscqueries`
+- `gsc_pages`
+- `crawl_results`
+- `opportunity_scores`
+- `content_inventory`
 
-```powershell
-py -3.12 -m venv .venv
-```
-
-Activate the virtual environment:
-
-```powershell
-.\.venv\Scripts\Activate.ps1
-```
-
-Install dependencies:
-
-```powershell
-python -m pip install -r requirements.txt
-```
-
-## Environment Variables
-
-This project uses `.env` for local secrets and configuration.
-
-Create a local `.env` file based on `.env.example`:
-
-```text
-OPENAI_API_KEY=
-ANTHROPIC_API_KEY=
-GOOGLE_APPLICATION_CREDENTIALS=
-GCP_PROJECT_ID=
-BIGQUERY_DATASET=seodiagnostic
-```
-
-Do not commit `.env`, API keys, service account JSON files, or raw private data to GitHub.
-
-## Data Policy
-
-Raw data should be stored in:
-
-```text
-data/raw/
-```
-
-Processed data should be stored in:
-
-```text
-data/processed/
-```
-
-These folders are ignored by Git except for `.gitkeep` files, so the folder structure is preserved without exposing private data.
-
-## Architecture
-
-```text
-GSC exports / crawl data / content data
-        |
-        v
-BigQuery dataset: seodiagnostic
-        |
-        v
-SQL + Python diagnostics
-        |
-        v
-Reports, CSV outputs, audits, and recommendations
-```
-
-## Roadmap
-
-- M0: Database, repo, schemas, Python foundation
-- M1: GSC and crawl pipeline with diagnostic report
-- M2: LLM content and compliance audit layer
-- M3: Embeddings and keyword cannibalization analysis
-- M4: Entity map, JSON-LD, and internal linking system
-- M5: AI visibility and GEO monitoring
-- M6: MCP-style SEO assistant tools
-- M7: International AI visibility workflows
-- M8: Lead-level playbook, ROI framework, and portfolio packaging
-
-## Status
-
-Current version: `v0.1.0`
-
-This repository is in active development.
-
-## Current Milestone (17-May-2026)
-
-### v0.1.5 - M0W2 SEO Diagnostic Database Schema
-
-The project now includes a 5-table SEO diagnostic data model, BigQuery DDL files, a DuckDB local fallback, and an ER diagram created with dbdiagram.io.
-
-Key files:
-
+Key outputs:
 - `sql/`
 - `src/init_duckdb.py`
 - `docs/er-diagram.md`
 - `release-log.md`
 
-## GSC CSV Export (18-May-2026)
+---
 
-- Source: Google Search Console export
-- File: `data/raw/gscqueriesraw.csv`
-- Schema: aligned with previous `gscqueries` schema
-- Header: `date,url,query,clicks,impressions,ctr,position,country,device,is_branded`
-- Clean CSV: not generated, because raw file already matches schema
-- Next: load CSV into BigQuery `gscqueries` table
+### M0W3 - GSC + Crawl SQL Diagnostic
 
-### Load GSC CSV to BigQuery  (18-May-2026)
+Built a reusable workflow that combines Google Search Console data, lightweight crawl data, and BigQuery SQL analysis to identify early SEO opportunities.
 
-Loaded `data/raw/gscqueriesraw.csv` into BigQuery table `seodiagnostic.gscqueries`.
-Validation query: `SELECT COUNT(*) FROM seodiagnostic.gscqueries`.
+Completed:
+- Exported GSC query/page data
+- Loaded GSC data into BigQuery
+- Generated a 30-URL crawl seed from GSC landing pages
+- Crawled on-page SEO fields such as status code, title, meta description, H1, canonical, word count, and schema presence
+- Created and tested 3 BigQuery opportunity queries
 
-### M0W3D3 - Crawl 30 URLs
+SQL analysis:
+- `sql/q01_top_queries.sql` - Top queries by impressions and clicks
+- `sql/q02_striking_distance.sql` - Non-branded query/page pairs ranking 11-20
+- `sql/q03_low_ctr.sql` - Non-branded top-10 query/page pairs with low CTR
 
-Generated a 30-URL crawl seed from GSC landing pages and crawled on-page SEO fields.
+Data policy:
+- Raw GSC and crawl CSV files are stored locally in `data/raw/`
+- Raw private data is not committed to GitHub
 
-Local files:
-- `data/raw/crawlseed.csv`
-- `data/raw/crawlresults.csv`
+Key outputs:
+- `src/make_crawlseed.py`
+- `src/crawl_urls.py`
+- `sql/q01_top_queries.sql`
+- `sql/q02_striking_distance.sql`
+- `sql/q03_low_ctr.sql`
 
-Crawl output fields:
-- `url`
-- `statuscode`
-- `title`
-- `metadescription`
-- `h1`
-- `canonical`
-- `wordcount`
-- `schemafound`
-- `crawledat`
+---
 
-Raw CSV files are kept locally and not pushed to GitHub.
+### M0W4 - Python + BigQuery Automation
+
+Started converting manual BigQuery and CSV workflows into repeatable Python automation.
+
+Completed:
+- Set up Python BigQuery client authentication
+- Created a BigQuery roundtrip test script
+- Loaded local GSC CSV data into BigQuery using Python
+- Started BigQuery-to-local sync workflow using DuckDB and Parquet
+
+Automation scripts:
+- `src/bq_auth_check.py`
+- `src/00_roundtrip_test.py`
+- `src/load_csv_to_bq.py`
+- `src/sync_bq_to_duckdb.py`
+
+Local analytics layer:
+- BigQuery remains the cloud warehouse
+- DuckDB and Parquet are used as local fallback analysis layers
+- Processed local data is stored in `data/processed/` and not committed to GitHub
+
+Key outputs:
+- `src/load_csv_to_bq.py`
+- `src/sync_bq_to_duckdb.py`
+- `requirements.txt`
+
+
+## Status
+
+Current phase: `M0 - Database, Schema, GSC Diagnostics, and Python Automation`
+
+Completed:
+- M0W1 Project Foundation
+- M0W2 SEO Diagnostic Database Schema
+- M0W3 GSC + Crawl SQL Diagnostic
+- M0W4 Python + BigQuery Automation in progress
+
+This repository is in active development.
