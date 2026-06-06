@@ -102,7 +102,6 @@ Key outputs:
 - `src/sync_bq_to_duckdb.py`
 - `requirements.txt`
 
-
 ## Status
 
 Current phase: `M0 - Database, Schema, GSC Diagnostics, and Python Automation`
@@ -112,5 +111,14 @@ Completed:
 - M0W2 SEO Diagnostic Database Schema
 - M0W3 GSC + Crawl SQL Diagnostic
 - M0W4 Python + BigQuery Automation in progress
-
 This repository is in active development.
+
+## No-API GSC workflow
+
+This project uses Google Search Console CSV exports and BigQuery SQL instead of the Search Console API.
+
+Current pipeline:
+1. Export query/page data from GSC.
+2. Load CSV into BigQuery table `seo_diagnostic.gscqueries`.
+3. Run SQL diagnostics in `/sql`.
+4. Save selected query outputs into `/outputs`.
