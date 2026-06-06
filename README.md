@@ -122,3 +122,13 @@ Current pipeline:
 2. Load CSV into BigQuery table `seo_diagnostic.gscqueries`.
 3. Run SQL diagnostics in `/sql`.
 4. Save selected query outputs into `/outputs`.
+
+
+## M1W6 Crawl + GSC Join
+
+- URLs attempted: 30
+- URLs crawled successfully: 30
+- URLs failed: 0
+- BigQuery table: `seo_diagnostic.crawl_results`
+- Join SQL: `sql/q05_gsc_crawl_join_page_level.sql`
+- Notes: Joined GSC query/page performance with crawl signals including status code, title, H1, canonical, word count, and schema found.
