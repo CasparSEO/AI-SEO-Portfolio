@@ -118,4 +118,71 @@ Key output:
 
 ---
 
-### 
+### M1W7 - URL-query Opportunity Scoring
+
+Built a scoring layer that ranks non-branded URL-query opportunities using Google Search Console data.
+
+Key outputs:
+- `docs/scoringmodel.md`
+- `src/scoreopportunities.py`
+- `outputs/top50opportunities.csv`
+- `outputs/m1w7pitch.md`
+
+This workflow turns raw GSC data into a practical SEO action list: which URL to improve, which query to target, why it matters, and what action to take next.
+
+## Status
+
+Current phase: `M1 - SEO Data Pipeline`
+
+Completed:
+- M0W1 Project Foundation
+- M0W2 Diagnostic Schema
+- M0W3 GSC + Crawl SQL Diagnostics
+- M0W4 Python + BigQuery Automation
+- M1W6 Crawl + GSC Join
+- M1W7 URL-query Opportunity Scoring
+
+In progress:
+- M1W8 Diagnostic Report
+
+This repository is in active development.
+
+## No-API GSC Workflow
+
+This project uses Google Search Console CSV exports and BigQuery SQL instead of the Search Console API.
+
+Current pipeline:
+1. Export query/page data from GSC
+2. Load CSV into BigQuery table `seo_diagnostic.gscqueries`
+3. Run SQL diagnostics from `sql/`
+4. Generate prioritised opportunity outputs in `outputs/`
+5. Convert scored opportunities into a short diagnostic report
+
+## M1 Diagnostic Layer
+
+This module turns Google Search Console query-level data and crawl signals into prioritised SEO opportunities.
+
+The workflow focuses on non-branded queries with real search demand, recent impressions, and striking-distance rankings. Instead of only reporting performance, it ranks URL-query pairs by opportunity score and converts them into specific SEO actions such as title/meta refreshes, content expansion, and internal linking improvements.
+
+### Key outputs
+
+- `docs/scoringmodel.md`  
+  Scoring logic for striking-distance opportunities, CTR improvement potential, and future Google AIO readiness extension
+
+- `src/scoreopportunities.py`  
+  Python script that queries BigQuery and exports prioritised SEO opportunities
+
+- `outputs/top50opportunities.csv`  
+  Top 50 URL-query opportunities ranked by score, reason, and recommended action
+
+- `docs/diagnosticreport.md`  
+  Short markdown report that translates scored opportunities into practical next steps
+
+### Example opportunities
+
+Sample opportunities from the current output include:
+- `https://www.airwallex.com/hk-zh/blog/remittance-to-mainland-china` → `大陸匯款到香港限制`
+- `https://www.airwallex.com/hk-zh/blog/business-registration-certificate` → `商業登記處派籌時間`
+- `https://www.airwallex.com/hk/blog/dbs-open-account` → `dbs business account`
+
+These examples show the kind of opportunity this project is designed to identify: pages already ranking near page one but still underperforming in CTR, content depth, or internal linking support.
