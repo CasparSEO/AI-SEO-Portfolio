@@ -132,3 +132,16 @@ Current pipeline:
 - BigQuery table: `seo_diagnostic.crawl_results`
 - Join SQL: `sql/q05_gsc_crawl_join_page_level.sql`
 - Notes: Joined GSC query/page performance with crawl signals including status code, title, H1, canonical, word count, and schema found.
+
+
+## M1W7: URL-query opportunity scoring
+
+This module ranks non-branded URL-query opportunities using Google Search Console performance data.
+
+Key outputs:
+- `docs/scoringmodel.md`: scoring model for SEO opportunity prioritization and future Google AIO readiness
+- `src/scoreopportunities.py`: Python script that queries BigQuery and exports the top opportunities
+- `outputs/top50opportunities.csv`: top 50 prioritized URL-query opportunities
+- `outputs/m1w7pitch.md`: portfolio pitch explaining the top 3 opportunities and recommended actions
+
+The workflow turns raw GSC data into a practical SEO action list: which URL to improve, which query to target, why it matters, and what action to take next.
